@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define MAXN 10000
+lli a ,b, n, p;   ///P colors, A besise color, B wanted color, N cans, each integer of different colors
+int visited[MAXN]; ///Final color is taken mod p;
+vector<int> colors; ///Instead of an adjacency list, I will just brute force it
+struct stuff
+{
+    int color;
+    int length;
+};
+void bfs(int start)
+{
+    memset(visited, -1, sizeof visited);
+    queue<stuff> q;
+    visited[start] = true;
+    stuff temp;
+    temp.color = start; temp.length = 0;
+    q.push(temp);
+    while(!q.empty()){
+        //cout<<q.size()<<endl;
+        stuff v = q.front();
+        if(v.color == b){
+            cout<<v.length<<endl;
+            return ;
+        }
+        q.pop();
+        for(int e: colors){
+            int new_color = ((e*v.color)% p)%p%p%p;
+            if(visited[new_color] == -1){
+                visited[new_color] +=1;
+                stuff temp;
+                temp.color = new_color; temp.length = v.length+1;
+                q.push(temp);
+
+            }
+        }
+    }
+    cout<<-1<<endl;
+    return;
+
+}
+int main()
+{
+    cin>>a>>b>>n>>p;
+    for(int i=0;i<n;i++){
+        int x;
+        cin>>x;
+        colors.push_back(x);
+    }
+    bfs(a);
+
+
+
+
+
+}
