@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define MAXN 1000000
+lli n,m;
+vector<int> adj[MAXN];
+bool visited[MAXN];
+struct stuff{
+    int val;
+    int dist;
+};
+void bfs(lli start)
+{
+    memset(visited, false, sizeof visited);
+    queue<stuff> q;
+    visited[start] = true;
+    stuff temp;
+    temp.val = start; temp.dist = 0;
+    q.push(temp);
+    while(!q.empty()){
+        stuff v = q.front();
+        if(v.val == n){
+            cout<<v.dist<<endl;
+            return;
+        }
+        q.pop();
+        for(lli e : adj[v.val]){
+            if (visited[e] == false){
+                visited[e] = true;
+                stuff temp;
+                temp.val = e;temp.dist  = v.dist+1;
+                q.push(temp);
+            }
+        }
+
+    }
+}
+int main()
+{
+    cin>>n;
+    for(lli i = 1;i<=n+2;i++){
+        if(i>1) adj[i].push_back(i-1);
+        if(i<n+2) adj[i].push_back(i+1);
+        if(i*3 <= n+2) adj[i].push_back(i*3);
+    }
+    bfs(1);
+
+
+
+
+
+}
