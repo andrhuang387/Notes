@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define MAXN 100
+lli n, m;
+int adj[MAXN][ MAXN];
+int visited[MAXN];
+set<int> ans[MAXN];
+struct stuff
+{
+    int island;
+    int time;
+};
+void bfs(int start)
+{
+    memset(visited, -1, sizeof visited);
+    queue<stuff> q;
+    visited[start]+=1;
+    stuff temp;
+    temp.island = start; temp.time = 1;         ///Forgot to insert first val;
+    ans[temp.time] .insert(temp.island);
+    q.push(temp);
+    while(!q.empty()){
+        stuff v = q.front();
+        q.pop();
+        ans[v.time].insert(v.island);
+        for(int i=1;i<=n;i++){
+            if(adj[v.island][i]==1 && visited[i]==-1){
+                visited[i]+=1;
+                stuff temp;
+                temp.island = i;temp.time = v.time+1;
+                q.push(temp);
+            }
+        }
+    }
+
+}
+int main()
+{
+    cin>>n>>m; /// n islands, M start location
+    for(int i=1;i<=n;i++){
+        for(int j  =1;j<=n;j++){          ///Forgot the whole thing was indexed at 1
+            cin>>adj[i][j];
+        }
+    }
+    bfs(m);
+    for(int i=1;i<=n;i++){
+        if(ans[i].size() ==0) continue;
+        for(auto it: ans[i]) {
+            cout<<it<<" ";
+        }
+        cout<<endl;
+    }
+}
