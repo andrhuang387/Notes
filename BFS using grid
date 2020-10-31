@@ -1,0 +1,103 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define MAXN 100
+int n ,m ,m1, m2;
+int start_col, start_row;
+int visited[30][30] ={0};
+int forw[4] = {1,1,-1, -1};
+int side[4] = {-1, 1, -1, 1};
+struct coor{
+    int row;
+    int col;
+};
+struct mod_coor{
+    int row;
+    int col;
+    int time;
+};
+vector<coor> adj[30][30];
+int graph[30][30];
+void bfs(int row, int col)
+{
+    //cout<<row<<" " <<col<<endl;
+    queue<mod_coor> q;
+    mod_coor temp;
+    temp.row = row; temp.col = col; temp.time = 0;
+    q.push(temp);
+    visited[row][col] +=1;
+    while(!q.empty()){
+        mod_coor v = q.front();
+        q.pop();
+        //cout<<v.row<<"  "<<v.col<<endl;
+        if(graph[v.row][v.col] == 4){
+            //cout<<v.row<< " "<<v.col<<endl;
+            cout<<v.time;
+            return;
+        }
+        ///cout<<v.row<<" " <<v.col<<"  "<<graph[v.row][v.col]<<endl;
+        ///cout<<"a "<<q.size()<<endl;
+        for(auto e: adj[v.row][v.col]){
+            //cout<<e.row<< " "<<e.col<< " EVALS"<<endl;
+            //cout<<visited[e.row][e.col]<<endl;
+            if(visited[e.row][e.col]==0){
+                visited[e.row][e.col] +=1;
+                mod_coor temp;
+                temp.row = e.row; temp.col = e.col; temp.time = v.time+1;
+                //cout<<temp.row<<"  "<<temp.col<<"  TEMP"<<endl;
+                q.push(temp);
+            }
+        }
+    }
+}
+bool exists(int row, int col)
+{
+    if (row <=m && row>=1 && col<=n && col>=1) return true;
+    return false;
+}
+int main()
+{
+    cin>>m>>n>>m1>>m2;   ///M rows and N columns
+    for(int i  =1;i<=m;i++){
+        for (int j  =1; j<=n;j++){
+            int x;
+            cin>>x;
+            if(x==2) x=0;
+            if(x==3) {start_row = i; start_col  = j;}
+            graph[i][j] = x;
+        }
+    }
+
+    //cout<<endl;
+    ///creating an adjacency list
+    for(int i = 1;i<=m;i++){
+        for(int j  =1;j<=n;j++){
+            for(int f = 0;f<4;f++){
+                    if(graph[i][j] != 0 &&exists(i+ m1* forw[f], j + m2* side[f]) && graph[i + m1* forw[f]][j + m2* side[f]]!= 0) {
+                        coor temp;
+                        temp.row =i +  m1* forw[f];
+                        temp.col = j + m2* side[f];
+                        adj[i][j].push_back(temp);
+                    }
+                    if(graph[i][j] != 0 && exists(i+ m2* side[f], j + m1* forw[f]) && graph[i + m2* side[f]][j + m1* forw[f]]!=0 ){
+                        coor temp;
+                        temp.col = i + m1* forw[f];
+                        temp.row = j + m2* side[f];
+                        adj[i][j].push_back(temp);
+                }
+            }
+            //cout<<adj[i][j].size()<<" " ;
+        }
+        //cout<<endl;
+    }
+    //cout<<endl;
+    /*
+    for(int i = 0;i<4;i++){
+        for(int j = 0;j<5;j++){
+            cout<<visited[i][j]<<" " ;
+        }
+        cout<<endl;
+    }
+    */
+    bfs(start_row, start_col);
+}
