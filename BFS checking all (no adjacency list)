@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define MAXN 200000
+lli n ,x;
+vector<pair<int,bool>> bales;
+vector<string> words;
+map<string, int> visited; string start,finish;
+struct stuff{
+    string word;
+    int time;
+};
+void bfs(string start)
+{
+    //memset(visited, -1, sizeof visited);
+    //cout<<1<<endl;
+    queue<stuff> q;
+    stuff temp;
+    temp.word = start; temp.time = 0;
+    q.push(temp);
+    visited.at(start)++;
+    //cout<<2<<endl;
+    while(!q.empty()){
+        stuff v= q.front();
+        //cout<<3<<endl;
+        if(v.word==finish){
+            cout<<v.time<<endl;
+            return;
+        }
+        q.pop();
+        //cout<<4<<endl;
+        for(auto e: words){
+            if(visited.at(e) == -1){
+                int num_differences = 0;
+                for(int i = 0;i<e.length();i++){
+                    if(v.word[i] != e[i]) num_differences++;
+                }
+                if(num_differences == 1){
+                    visited.at(e) ++;
+                    stuff temp;
+                    temp.word = e; temp.time = v.time+1;
+                    q.push(temp);
+                }
+            }
+        }
+    }
+
+}
+int main()
+{
+    ifstream fin("angry.in");
+    ofstream fout("angry.out");
+    cin>>start>>finish;
+    int n = 2;
+    visited.insert(pair<string,int> (start,-1)); visited.insert(pair<string,int> (finish, -1));
+    bool cont = true;
+    while(cont){
+        string a  ="";
+        cin>>a;
+        if(a=="") cont = false;
+        else{
+        if(a.length() != start.length()) continue;
+        words.push_back(a);
+        visited.insert(pair<string, int> (a, -1));
+        n++;}
+    }
+    bfs(start);
+
+
+
+}
