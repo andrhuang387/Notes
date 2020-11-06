@@ -1,0 +1,75 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define MAXN 200000
+lli w,h;
+char adj[100][100];
+int visited[100][100] = {0};
+struct stuff
+{
+    int x;
+    int y;
+    int time;
+};
+int vert[4] = {0, 0 ,-1, 1};
+int hori[4] = {1,-1,0,0};
+void bfs(int i, int j){
+    queue<stuff> q;
+    stuff temp; temp.x = j; temp.y = i; temp.time = 0;
+    //cout<<i<<"  "<<j<<endl;
+    q.push(temp);
+
+    while(!q.empty()){
+
+        stuff v  = q.front();
+        q.pop();
+        //bool good = false;
+        //if(v.y == 1 && v.x == 5){ good  =true; cout<<adj[v.y][v.x]<<" " <<visited[v.y][v.x]<<" " <<v.time<<"  "<<v.x<< " "<<v.y <<endl;}
+        if(adj[v.y][v.x]=='C' && visited[v.y][v.x] !=-1){
+            cout<<v.time - 1;
+            return ;
+        }
+        for(int z = 0;z<4;z++){
+            int horizontal = v.x  +hori[z];
+            int vertical = v.y  +vert[z];
+            //if(good)cout<<"VALUE "<<adj[horizontal][vertical]<<"  "<<visited[horizontal][vertical]<<endl;
+            while(adj[vertical][horizontal] != '*' && horizontal<w && horizontal >=0 && vertical <h && vertical >=0 ){
+                if(visited[vertical][horizontal]== 0){
+                    //if(good)cout<<"VALUE "<<adj[vertical][horizontal]<<endl;///////
+                    visited[vertical][horizontal] ++;
+                    stuff temp;
+                    temp.x = horizontal; temp.y = vertical; temp.time = v.time+1;
+                    q.push(temp);
+                }
+                horizontal+=hori[z];
+                vertical+=vert[z];
+            }
+        }
+        //if(good)good = false;//////
+
+    }
+}
+int main()
+{
+    cin>>w>>h;
+    int i_val, j_val;
+    for(int i = 0;i<h;i++){
+        string x;
+        cin>>x;
+        for(int j  =0;j<w;j++){
+            adj[i][j] = x[j];
+            if(x[j]=='C'){
+                i_val = i; j_val = j;
+            }
+            if(x[j]=='*')visited[i][j]++;
+        }
+    }
+    visited[i_val][j_val] = -1;
+    /*for(int m  =0;m<h;m++){
+        for(int n  =0;n<w;n++)
+            cout<<visited[m][n]<<" " ;
+        cout<<endl;
+    }
+    */
+    bfs(i_val, j_val);
+}
