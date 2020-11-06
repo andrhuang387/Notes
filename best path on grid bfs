@@ -1,0 +1,111 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define MAXN 200000
+lli n ,m;
+char adj[300][300]; /// will be a Matrix instead of using a adjacency list or matrix
+int visited[300][300]  ={0};
+struct stuff{
+    int y;
+    int x;
+    int time;
+};
+int hor[4] = {0,0,1,-1};
+int ver[4] = {1,-1, 0, 0};
+void bfs(int i, int j)
+{
+
+    //memset(visited, 0, sizeof a)
+    queue<stuff> q;
+    stuff temp;
+    map<int, vector<stuff>> back;
+    temp.y = i;temp.x = j; temp.time = 0;
+    q.push(temp);   ///add first element
+    while(!q.empty() || !back.empty()){
+
+        if(q.empty()){
+                //cout<<"DONE"<<endl;
+            auto it = back.begin();
+            for(auto itr: it->second){
+                    //cout<<itr.y<<"  "<<itr.x<<endl;
+                    q.push(itr);}
+
+            back.erase(it);
+        }
+        stuff v = q.front();
+        q.pop();
+        //cout<<adj[v.y][v.x]<<endl;
+        if(adj[v.y][v.x] == '='){       ///if it is the end, output the answer.
+            cout<<v.time<<endl;
+            return;
+        }
+        ///when first new time value, look if there was a teleport time. If there was, add it to the end
+        auto found = back.find(v.time);
+        if(found != back.end()){
+            for(auto it: found->second){
+                q.push(it);
+            }
+            back.erase(found);  ///Remove it after we process all of it
+        }
+        ///go in the 4 directions
+        for(int z=0;z<4;z++){
+            int vertical = v.y + ver[z];
+            int horizontal = v.x +hor[z];
+            if(vertical >=n || vertical < 0 || horizontal >= m || horizontal < 0) continue; ///precondition must be inside grid
+            if((adj[vertical][horizontal] == '.' ||adj[vertical][horizontal] == '=')   && visited[vertical][horizontal]==0){    ///if it is passible and equals grass or finish and not visited
+                stuff temp;
+                temp.x = horizontal; temp.y = vertical;temp.time = v.time+1;
+                q.push(temp); ///add to the queque
+                visited[vertical][horizontal]++; /// Is visited
+            }
+            else if(adj[vertical][horizontal] != '#' &&adj[vertical][horizontal] != '@'&& visited[vertical][horizontal]==0){ ///If it is a teleporter, treat it differently
+                    //cout<<"THIS "<<adj[vertical][horizontal] <<endl;
+                stuff temp;
+                temp.x = horizontal; temp.y = vertical;temp.time = v.time+2; ///Add the case where, it goes to teleporter (+1) and goes foreward and back( +2) with total +3
+                char let = adj[vertical][horizontal];
+                for(int first = 0;first<n;first++){
+                    for(int second = 0; second<m;second++){                                  ///                                                                        ###
+                        if(first == vertical && second == horizontal) continue;          ///Does !!!!!!Does not work when it is a value surrounded by lots of # such as #A#     A
+                        if(adj[first][second]== let && visited[first][second]==0){                                                         ///                          ###                            //cout<<"TELEPORTED " <<adj[first][second]<<endl;
+                            stuff tele;
+                            tele.x = second; tele.y = first; tele.time = v.time+1;
+                            ///cout<<"ZZZZZ  "<<adj[tele.y][tele.x]<<"  "<<adj[v.y][v.x]<<"  "<<v.time<<endl;
+                            q.push(tele);
+                            visited[first][second]++; ///Add when it teleports to the new location and mark visited
+                            auto found = back.find(v.time+3);
+                            if(found== back.end()){
+                                    vector<stuff> holder; holder.push_back(temp);
+                                back.insert(pair<int,vector<stuff>> (v.time+2, holder));
+                            }
+                            else{
+                                found->second.push_back(temp);
+                            }
+                            visited[vertical][horizontal]++; ///teleporter position visited
+                        }
+                    }
+                }
+            }
+        }
+        //cout<<q.size()<<endl;
+
+    }
+}
+int main()
+{
+    cin>>n>>m;
+    int i_val,j_val;
+    ///Input the grid
+    for(int i  =0;i<n;i++){
+        for(int j  =0;j<m;j++){
+            cin>>adj[i][j];
+            if(adj[i][j] == '@'){   ///Store the start x and y positions
+                i_val  =i;
+                j_val = j;
+            }
+        }
+    }
+    bfs(i_val, j_val);
+
+
+
+}
