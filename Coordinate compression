@@ -1,0 +1,125 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define MAXN 200000
+lli n ,m;
+ifstream fin("buckets.in");
+ofstream fout("buckets.out");
+map<int,int> resultx;
+map<int,int> resulty;
+int adj[1500][1500];
+int visited[1500][1500] = {0};
+int ans  =0;
+struct stuff
+{
+    int x1;
+    int x2;
+    int y1;
+    int y2;
+};
+void convert(set<int>x, map<int,int>& result)
+{
+    int curr = 0;
+    for(auto it:x){
+        result.insert(pair<int,int> (it, curr));
+        curr+=2;
+    }
+}
+void build(stuff it)
+{
+    //cout<<it.x1<< " "<<it.y1<< " "<<it.x2<<" " <<it.y2<<endl;
+    if(it.x1== it.x2){
+        if(it.y2<it.y1)swap(it.y2, it.y1);
+        for(int i =it.y1; i<= it.y2; i++){
+            adj[i][it.x1] = -1;
+        }
+        return ;
+    }
+     if(it.y1 == it.y2){
+        if(it.x2<it.x1)swap(it.x2, it.x1);
+        for(int i = it.x1; i<=it.x2; i++){
+            adj[it.y1][i] = -1;
+        }
+    }
+}
+int hori[4] = {0,0,1,-1};
+int vert[4] = {1,-1, 0, 0};
+int curr = 0;
+void dfs(int y, int x)
+{
+    if(y<0 || y> 2*n+m || x<0 || x>2*n+m || adj[y][x] == -1 || visited[y][x] != 0 ) return;
+    if(adj[y][x]==1) curr++;
+    //cout<<y<< " "<<x<<" " <<curr<<endl;
+    visited[y][x]++;
+    ans = max(ans, curr);
+    for(int i  =0;i<4;i++){
+
+        dfs(y+vert[i], x+hori[i]);
+    }
+
+
+}
+int main()
+{
+   cin>>n>>m;
+   vector<stuff> fence;
+   vector<pair<int,int>> point;
+   set<int> x;
+   set<int> y;
+   for(int i = 0;i<n;i++){
+        int x1, x2, y1, y2;
+        cin>>x1>>y1>>x2>>y2;
+        stuff temp;
+        x.insert(x1);
+        x.insert(x2);
+        y.insert(y1);
+        y.insert(y2);
+        temp.x1 =x1; temp.x2 = x2; temp.y1 = y1; temp.y2 =y2;
+        fence.push_back(temp);
+   }
+   for(int i  =0;i<m;i++){
+       int x1, y1;
+       cin>>x1>>y1;
+       x.insert(x1);
+       y.insert(y1);
+       point.push_back(make_pair(x1,y1));
+   }
+   convert(x, resultx);
+   convert(y, resulty);
+   for(auto it:fence){
+        auto found = resultx.find(it.x1);
+        it.x1 = found->second;
+        found = resultx.find(it.x2);
+        it.x2 = found->second;
+        found = resulty.find(it.y1);
+        it.y1 = found->second;
+        found = resulty.find(it.y2);
+        it.y2 = found->second;         ///0 means free spot
+        build(it);              ///-1 means fence
+   }
+   for(auto it: point){
+        auto found = resultx.find(it.first);
+        it.first = found->second;
+        found = resulty.find(it.second);
+        it.second = found->second;
+        adj[it.second][it.first] = 1; ///1 means cow
+   }
+   /*
+   for(int i = 0;i<30; i++){
+    for(int j  =0;j<30;j++){
+        cout<<adj[i][j]<< " ";
+    }
+    cout<<endl;
+   }
+   */
+   for(int i  =0; i<=2*n+m;i++){
+    for(int j  =0;j<=2*n+m;j++){
+        curr = 0;
+        dfs(i, j);
+        //cout<<endl;
+    }
+   }
+   cout<<ans<<endl;
+
+
+}
