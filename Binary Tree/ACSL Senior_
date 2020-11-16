@@ -1,0 +1,77 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define MAXN 200000
+int ans = 0;
+struct node
+{
+    int data;
+    int total =0;
+    struct node *left;
+    struct node *right;
+    node(int val)
+    {
+        data = val;
+        total++;
+        left = NULL;
+        right = NULL;
+    }
+};
+void add(char x, node* pos)
+{
+    if(x==pos->data){
+        pos->total++;
+    }
+    else if(x>pos->data){
+         if(pos->right == NULL){
+            pos->right = new node(x);
+         }
+         else{
+            add(x, pos->right);
+         }
+    }
+    else{
+        if(pos->left == NULL){
+            pos->left = new node(x);
+        }
+        else{
+            add(x, pos->left);
+        }
+    }
+}
+void find(node* pos)
+{
+    bool left   =false;
+    bool right = false;
+    if(pos->left != NULL) left = true;
+    if(pos->right != NULL ) right = true;
+    if((left&& !right)|| (right&& !left)) ans+= pos->total;
+    if(left){
+        find(pos->left);
+    }
+    if(right){
+        find(pos->right);
+    }
+}
+int main()
+{
+    string x;
+    getline(cin, x);
+    while(!((int) x[0] <123 && (int) x[0] > 96) && !((int)x[0] < 91 && (int)x[0] > 64)) {
+            x = x.substr(1);}
+    struct node * root;
+    if((int) x[0] <123 && (int) x[0] > 96) root = new node(x[0]);
+    else if((int)x[0] < 91 && (int)x[0] > 64){
+        char letter = x[0] -'A'  +'a';
+            root = new node(letter);
+    }
+    for(int i  =1;i<x.length();i++){
+        if((int) x[i] <123 && (int) x[i] > 96) add(x[i], root);
+        else if((int)x[i] < 91 && (int)x[i] > 64) {
+            char letter = x[i] -'A'  +'a';
+            add(letter, root);
+        }
+    }
+    find(root);
+    cout<<ans<<endl;
+}
