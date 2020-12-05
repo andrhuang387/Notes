@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define MAXN 50001
+#define faster ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+#define mod 1000000007
+#define vi vector<int>
+#define vpi vector<pair<int,int>>
+#define pb push_back
+#define mp make_pair
+lli r, c;
+lli largest [8];
+lli smallest[8];
+char a[101][101];
+int ans = 0;
+
+struct stuff{
+    int y;
+    int x;
+    int time;
+};
+int visited[101][101] = {0};
+int dx[4] = {0, 0, -1, 1};
+int dy[4] = {1, -1, 0 ,0};
+void bfs(int i, int j, int step)
+{
+    //cout<<i<< "  "<<j<<endl;
+    queue<stuff> q;
+    stuff temp; temp.y  =i; temp.x = j; temp.time = 0;
+    q.push(temp);
+    while(!q.empty()){
+        stuff v = q.front();
+        q.pop();
+        if(a[v.y][v.x] == 'C') {
+            cout<<v.time;
+            exit(0);
+        }
+        for(int z=  0; z<4;z++){
+            int ymove = v.y + dy[z];
+            int xmove = v.x + dx[z];
+            if(xmove<0 || xmove >= c || ymove<0 || ymove>= r )continue;
+            if(visited[v.y + dy[z]][v.x + dx[z]] == 0 && a[v.y + dy[z]][v.x + dx[z]] != '*'){
+                visited[v.y + dy[z]][v.x + dx[z]]++;
+                stuff temp;
+                //cout<<ymove<< "  "<<xmove<< "  ";
+                temp.y = v.y + dy[z]; temp.x = v.x + dx[z]; temp.time = v.time+1;
+                //cout<<v.time<< " "<<temp.time<<endl;
+                q.push(temp);
+
+            }
+        }
+    }
+
+}
+int main()
+{
+    cin>>r>>c;
+    pair<int,int> start;
+    pair<int, int> end;
+    for(int i  =0;i<r;i++){
+        string x;
+        cin>>x;
+        for(int j  =0;j<c;j++){
+            a[i][j] = x[j];
+            if(x[j] == 'B') {start.first = i; start.second  =j;}
+            if(x[j] == 'C') {end.first = i; end.second = j;}
+        }
+    }
+    bfs(start.first, start.second, 0);
+
+}
