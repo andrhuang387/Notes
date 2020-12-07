@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define faster ios_base::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+#define MAXN 200001
+#define vi vector<int>
+#define vpi vector<pair<int,int>>
+#define pb push_back
+#define mp make_pair
+int n, m;
+    vector<pair<int, char>> adj[MAXN];
+    int visited[MAXN] ={0};
+void dfs(int pos, int oldval)
+{
+    for(auto it: adj[pos]){
+            /*
+        if(it.first == oldval && it.second == 'D'){
+            cout<<0<<endl;
+            exit(0);
+        }
+        if(it.first != oldval && it.second== 'S'){
+            cout<<0<<endl;
+            exit(0);
+        }
+        */
+        if(visited[it.first] == 0){
+            visited[it.first]++;
+            dfs(it.first, pos); ///Stupid error on pos vs it
+        }
+    }
+}
+
+int main()
+{
+    freopen("revegetate.in", "r", stdin);
+    //freopen("D://2.in", "r", stdin);
+    freopen("revegetate.out", "w", stdout);
+    cin>>n>>m;
+    for(int i  =0;i<m;i++){
+        char type;
+        int a, b;
+        cin>>type>>a>>b;
+        adj[a].push_back({b, type});
+        adj[b].push_back({a, type});
+    }
+    int ans = 0;
+    //cout<<n<<endl;
+    for(int i = 1;i<=n;i++){
+        if(visited[i] == 0){
+            dfs(i, -2);
+            //cout<<ans<<endl;
+            ans++;
+        }
+    }
+    //cout<<ans<<endl;
+    string res = "1";
+    for(int i  =0;i<ans;i++){
+        res+="0";
+    }
+    cout<<res<<endl;
+}
