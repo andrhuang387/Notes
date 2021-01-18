@@ -21,3 +21,8 @@ int main() {
     }
     cout<<ans<<endl;
 }
+/*
+the crux of the code is breaking down into smaller recursive functions
+1. Either start anew
+2. Add it to the previous best 
+*/
