@@ -1,0 +1,5 @@
+If all points distinct
+-Input points x and y
+-Sort points by x;
+      -For loop, with each point being i
+-Do same with y
