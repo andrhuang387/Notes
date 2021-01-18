@@ -1,0 +1,23 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define f first
+#define s second
+int best[101] = {0};
+int a[7] = {-15, 8, -2, 1, 0, 6, -3};
+int dp(int i)
+{
+    if(i == 0){
+        best[i] = a[i];
+        return a[i];
+    }
+    best[i] = max(a[i], a[i]  +best[i-1]);
+    return best[i];
+}
+int main() {
+    int ans = 0;
+    for(int i  =0;i<7;i++){
+        ans = max(ans, dp(i));     //
+    }
+    cout<<ans<<endl;
+}
