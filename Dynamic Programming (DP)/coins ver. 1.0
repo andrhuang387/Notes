@@ -1,0 +1,27 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define f first
+#define s second
+#define pb push_back
+#define MAXN 100000001
+int has[MAXN];
+int best[MAXN];
+vector<int> coins {1, 5, 10,25};
+int solve(int x)
+{
+    if(x<0) return MAXN;
+    if(x==0) return 0;
+    if(has[x]) return best[x];
+    int least = MAXN;
+    for(auto c: coins)
+    {
+        least = min(least, solve(x-c)+1);
+    }
+    best[x] = least;
+    has[x] = true;
+    return least;
+}
+int main()
+{
+    cout<<solve(49)<<endl;
+}
