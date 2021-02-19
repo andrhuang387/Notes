@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define f first
+#define s second
+#define pb push_back
+#define MAXN 100000001
+int has[MAXN];
+int best[MAXN];
+int first[MAXN];
+vector<int> coins {1, 5, 10,25};
+void solve(int x)
+{
+    best[0] = 0;
+    for(int i = 1; i<=x; i++){
+        best[i] = MAXN;
+        for(auto c: coins){
+            if(i -c>=0 && best[i-c]+1  < best[i]){
+                best[i] = best[i-c]  +1;
+                first[i] = c;
+            }
+        }
+    }
+
+}
+int main()
+{
+    solve(49);
+    cout<<best[49]<<endl;
+    cout<<"COINS"<<endl;
+    int n = 49;
+    while(n>0){
+        cout<<first[n]<<endl;;
+        n-=first[n];
+    }
+}
