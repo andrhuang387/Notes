@@ -1,0 +1,21 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define f first
+#define s second
+#define pb push_back
+#define MAXN 100000001
+int a[12] = {0, -1, 2, 1,7,3,5,9,10,2,3, 20};
+int len[12];
+int main()
+{
+    for(int i  =0;i<12;i++){
+        len[i] = 1;
+        for(int j  =0;j<i;j++){
+            if(a[j]  <a[i]){
+                len[i] = max(len[i], len[j]+1);
+            }
+        }
+    }
+    cout<<len[11];
+
+}
