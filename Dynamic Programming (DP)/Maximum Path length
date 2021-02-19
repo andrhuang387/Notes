@@ -1,0 +1,18 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define f first
+#define s second
+#define pb push_back
+#define MAXN 100000001
+int a[10][10] = {{3,7,9,2,7}, {9,8,3,5,5}, {1,7,9, 8,5}, {3,8,6,4,10}, {6,3,9,7,8}};
+int sum[10][10];
+int main()
+{
+    for(int y = 1; y<=5; y++){
+        for(int x = 1; x<=5;x++){
+            sum[y][x] = a[y-1][x-1] + max(sum[y-1][x], sum[y][x-1]);
+        }
+    }
+    cout<<a[4][4]<<endl;
+    cout<<sum[5][5];
+}
