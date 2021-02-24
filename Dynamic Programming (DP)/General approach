@@ -1,0 +1,19 @@
+ Basically split it into subproblems of either using it or not
+ 
+ Fill a tabulation, starting from lowest "time" independent variable up
+ 
+ time-------------------------->
+ other (such as edge)
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ For each point, try and get previous square( if there was a possible path to it before) and add the value of choosing a current square and finding the max of all of previous + current to get dp value
+ 
+ Answer:
+  - Usually, to get an answer, if i== n (or any other value that could produce the answer) have a max for the answer
+ 
+  - Ans, dp should initially filled by all 10000s (for min) or -1000s (for max) and skipping if value is inital
