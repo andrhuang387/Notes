@@ -1,0 +1,79 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define f first
+#define s second
+#define pb push_back
+#define MAXN 100001
+#define INF 1000000000000000000
+#define mod 1000000007
+#define loop(i, a,b) for  (int i=(a); i<= (signed)(b); i++)
+#define lp(i,a) for(int i = 0;i<(signed)(a); i++)
+lli n, m,k;
+string s;
+vector<pair<lli,lli>> adj[MAXN];
+vector<pair<lli,lli>> revadj[MAXN];
+bool processed[MAXN];
+int main() {
+    cin>>n>>m;
+    lli distance[MAXN];
+    for(int i  =1; i<=n;i++) distance[i] = INF;
+    lp(i, m){
+      lli s,e,w;
+      cin>>s>>e>>w;
+      adj[s].pb({e,w});
+      revadj[e].pb({s,w});
+    }
+    distance[1] = 0;
+    priority_queue<pair<lli,lli>> q;
+    q.push({0,1});
+    while(!q.empty()){
+        lli a = q.top().s;
+        q.pop();
+        if(processed[a])continue;
+        processed[a] = true;
+        for(auto u: adj[a]){
+            lli b = u.f, w = u.s;
+            if(distance[a] + w < distance[b]){
+                distance[b] = distance[a] + w;
+                q.push({-distance[b],b});
+            }
+        }
+    }
+
+    memset(processed, false, sizeof processed);
+    lli revdistance[MAXN];
+    for(int i  =1; i<=n;i++) revdistance[i] = INF;
+    revdistance[n] = 0;
+    q.push({0,n});
+    while(!q.empty()){
+        lli a = q.top().s;
+        q.pop();
+        if(processed[a])continue;
+        processed[a] = true;
+        for(auto u: revadj[a]){
+            lli b = u.f, w = u.s;
+            if(revdistance[a] + w < revdistance[b]){
+                revdistance[b] = revdistance[a] + w;
+                q.push({-revdistance[b],b});
+            }
+        }
+    }
+
+
+    lli ans = INF;
+    loop(i, 1, n){
+        for(auto it: adj[i]){
+            lli u = it.f;
+            lli w = it.s;
+            //cout<<distance[i]<< " "<<revdistance[u]<<endl;
+            ans = min(ans, distance[i]  +w/2  +revdistance[u]);
+        }
+    }
+    cout<<ans<<endl;
+
+
+
+
+
+}
