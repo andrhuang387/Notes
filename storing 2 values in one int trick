@@ -1,0 +1,6 @@
+to store two values in one number, just do this
+e.x store x and y 
+val = x*n + y;
+whenever you need the x and y just do 
+x=  val/n
+y = val%n
