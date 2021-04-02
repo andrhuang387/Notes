@@ -1,0 +1,74 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define f first
+#define s second
+#define pb push_back
+#define MAXN 100001
+#define INF 2000000000
+#define mod 1000000007
+#define loop(i, a,b) for  (int i=(a); i<= (signed)(b); i++)
+#define lp(i,a) for(int i = 0;i<(signed)(a); i++)
+typedef vector<int> vi;
+typedef pair<int,int> pii;
+typedef vector<pair<int,int>> vpii;
+int n,q;
+vpii edge[MAXN];
+int pred[MAXN];
+vi suc[MAXN];
+int fin[MAXN];
+bool works (int n, int k)
+{
+    lp(i, n)suc[i].clear(), pred[i] =0;
+    lp(i, k){
+        for(auto it:edge[i]){
+            suc[it.f].pb(it.s);
+            pred[it.s]++;
+        }
+    }
+    priority_queue<int> q;
+    lp(i,n){
+        if(pred[i] == 0)q.push(-i);
+    }
+    lp(i,n){
+        if(q.empty())return false;
+        int v =-q.top(); q.pop();
+        fin[i] = v;
+        for(int it: suc[v]){
+            pred[it]--;
+            if(pred[it] == 0)q.push(-it);
+        }
+    }
+    return true;
+}
+int main() {
+ freopen("milkorder.in","r",stdin);
+ freopen("milkorder.out","w",stdout);
+ cin>>n>>q;
+ lp(i,q){
+    int num;
+    cin>>num;
+    int prev;
+    lp(j, num){
+        int x;
+        cin>>x;x--;
+        if(j>0)edge[i].pb({prev , x});
+        prev = x;
+    }
+ }
+    int low = 0;
+    int high = q;
+    int ans =-1;
+    while(low<=high){
+        int mid = (low + high)/2;
+        if(works(n, mid)){
+            ans = mid;
+            low = mid+1;
+        }
+        else{
+            high = mid -1;
+        }
+    }
+    works(n, ans);
+    lp(i, n) cout<<fin[i]+1<<(i!=n-1? ' ': '\n');
+}
