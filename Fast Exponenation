@@ -1,8 +1,10 @@
-long long pp(int base, int power){
-   if(power == 0) return 1;
-   if(power == 1) return (base + mod) % mod;
-   long long ans = pp(base,power/2);
-   ans = (ans * ans + mod) % mod;
-   if(power%2 == 1) ans = (ans*base + mod) % mod;
-   return (ans + mod) % mod;
+///fast exponenation
+long int exponentiation(int base,int exp)
+{
+    if (exp == 0) return 1;
+    if (exp == 1) return base % mod;
+    long int t = exponentiation(base, exp / 2);
+    t = (t * t) % mod;
+    if (exp % 2 == 0)return t;
+    else return ((base % mod) * t) % mod;
 }
