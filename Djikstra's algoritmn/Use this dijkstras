@@ -1,0 +1,21 @@
+void minimize(int loc)
+{
+    dist[loc] = 0;
+    priority_queue<pii> q;
+    q.push({0, 1});
+    vector<bool> seen(MAXN, false);
+    while(!q.empty()){
+        lli a = q.top().s; q.pop();
+        //cout<<"aval "<<a<<"  "<<q.size()<<endl;
+        if(seen[a]) continue;
+        seen[a] = true;;
+        for(auto u: adj[a]){
+            lli b = u.f; ///new adj
+            lli w = u.s; ///weight
+            if(dist[a] + w  < dist[b]){
+                dist[b] = dist[a] + w;
+                q.push({-dist[b], b});
+            }
+        }
+    }
+}
