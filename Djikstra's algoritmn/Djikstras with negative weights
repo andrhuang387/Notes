@@ -24,6 +24,7 @@ void minimize(int loc)
     while(!q.empty()){
         int a = q.top().second; q.pop();
         if(processed[a])continue;
+        processed[a] = true;
         for(auto u: adj[a]){
             int b =u.f;
             int w = u.s;
