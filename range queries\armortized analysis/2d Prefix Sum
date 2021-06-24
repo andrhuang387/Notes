@@ -1,0 +1,4 @@
+Can be done by creating a "rectangular 2d prefix sum" (essentially the row prefix sum but adding the element directly above it)
+
+then,  sum (xa,xA, yb, yB) can be solved as sum(A,B) - sum(a-1,B)  - sum(A,b-1) +sum(a-1,b-1).  
+   -  you can think of it like partioning the polygon so that the desired range is kept
