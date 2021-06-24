@@ -1,0 +1,9 @@
+Task: Find the smallest element in every subarray
+
+- let range be size k 
+- Use a dequeue (so that you can change the front and back)
+- if current value is smaller, then delete until none or top is smaller (the first element should be smallest element)
+ - once i >=k, if the current smallest element is shifted out of the window, remove it
+ 
+ Note:Can be modified to sliding window maximum by shifting the <= sign to >=
+
