@@ -1,0 +1,4 @@
+Problem: find nearest smaller element from left side
+- have stack
+- as you iterate, remove from stack if it is less than the current top
+- get the smallest element for answer and if the stack is empty, than smallest is none
