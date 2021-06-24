@@ -1,0 +1,27 @@
+Advantage over prefix sum is that it can be dynamic (as you have to recompute with prefix sum if you update a variable)
+
+
+- prefix sum can be found by the prefix sums of the binary representatiion of the range 
+- can be edited as every prefix range containing that element should be updated
+
+code:
+
+the k-= k&-k gets the least significant digit  (or the smallest power of two)
+find sum:
+
+
+    int sum(int k) {
+        int s = 0;
+        while (k >= 1) {
+           s += tree[k];
+    k -= k&-k; }
+    return s; 
+    }
+    
+ edit values:
+  
+    void add(int k, int x) {
+        while (k <= n) {
+    tree[k] += x;
+    k += k&-k; }
+    }
