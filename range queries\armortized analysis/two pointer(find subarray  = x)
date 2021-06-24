@@ -1,0 +1,3 @@
+have one loop (the leading one) from 0 ->n
+Have another pointer be incremented if the subarray sum is too large
+if it equals x, then break and you found your indicies for the subarray
