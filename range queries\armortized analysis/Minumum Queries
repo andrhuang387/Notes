@@ -1,0 +1,9 @@
+Task: find minimum value of a subarray
+
+
+Intuition: every nonnegative number can be represented as binary, so ranges can be done the same way
+-Find the minimum of subarrays of powers of two
+- For each query, represent as binary
+ - for each binary 1, find the precomputed minimum query
+ - solution is the minimum of all 2^i queries
+
