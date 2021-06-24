@@ -1,0 +1,13 @@
+1. binary search
+ - you can binary search by sorting the elements, iterate over every element, and binary search
+ - if the value equals the current element, check neighbors to see if it works
+ 
+ 
+ 2. walk in method
+  - sort the elements
+  -have two pointers on leftmost and rightmost
+  - if sum is too small, push the left on in
+  - if the sum is too large, push the right one in
+  - continue until no more to push in or found 
+  
+  
