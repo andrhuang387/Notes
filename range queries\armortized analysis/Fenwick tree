@@ -7,6 +7,7 @@ Advantage over prefix sum is that it can be dynamic (as you have to recompute wi
 code:
 
 the k-= k&-k gets the least significant digit  (or the smallest power of two)
+-x is done by inverting bits of x and adding 1
 find sum:
 
 
