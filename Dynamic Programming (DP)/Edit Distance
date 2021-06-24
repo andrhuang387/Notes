@@ -1,0 +1,8 @@
+Given stringa a and b, find cost to match two into same string
+subproblems (find minimum of the three states):
+- 1. delete last of b
+- 2. add to last of a
+- 3. remove last of both ( cost 1 if not same or cost 0 if same)
+
+Create (a+1) X (b+1) grid with edit distance. , go left right {top bottom} 
+ - this works since you can create different "endings" and find the minimum of those endings. This can help you lead to your desired answer
