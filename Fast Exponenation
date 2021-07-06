@@ -8,3 +8,16 @@ long int exponentiation(int base,int exp)
     if (exp % 2 == 0)return t;
     else return ((base % mod) * t) % mod;
 }
+
+///Version 2:
+lli expo(lli base, lli exp, lli m)
+{
+  lli ret = 1;
+  while(exp){
+    if(exp&1){
+      ret = ret*base%m;
+    }
+    base = base*base%m;
+    exp/=2;
+  }return ret;
+}
